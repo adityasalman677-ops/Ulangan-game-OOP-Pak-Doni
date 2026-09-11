@@ -6,16 +6,6 @@ public class GameManager : MonoBehaviour
     private int koinTerkumpul = 0;
     private int jumlahZombieMati = 0;
 
-    void OnEnable()
-    {
-        Enemy.OnZombieMati += SaatZombieMati;
-    }
-
-    void OnDisable()
-    {
-        Enemy.OnZombieMati -= SaatZombieMati;
-    }
-
     void Start()
     {
         totalKoin = GameObject.FindGameObjectsWithTag("Koin").Length;
@@ -40,6 +30,17 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log("KAMU MENANG!");
     }
+    private void OnEnable()
+    {
+        // Mendaftar sebagai penerima event
+        Enemy.OnZombieMati += SaatZombieMati;
+    }
+
+    private void OnDisable()
+    {
+        // Melepas pendaftaran saat object dinonaktifkan/hancur agar tidak memicu memory leak
+        Enemy.OnZombieMati -= SaatZombieMati;
+    }
 
     void OnGUI()
     {
@@ -47,4 +48,4 @@ public class GameManager : MonoBehaviour
         GUI.Label(new Rect(16, 16, 480, 36), "Koin: " + koinTerkumpul + " / " + totalKoin);
         GUI.Label(new Rect(16, 52, 480, 36), "Zombie mati: " + jumlahZombieMati);
     }
-}
+}   

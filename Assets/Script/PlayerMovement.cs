@@ -1,46 +1,52 @@
 using UnityEngine;
-using UnityEngine.InputSystem; 
+using UnityEngine.InputSystem;   // WAJIB untuk Input System
 
 public class PlayerMovement : MonoBehaviour
 {
+    private int hp = 100;
     public float kecepatan = 5f;
-    private Vector2 arahGerak; 
-    private GameManager gameManager;
     public int skor = 0;
+    public GameManager gameManager;
 
+    private Vector2 arahGerak;   // nilai dari action "Move"
 
-void Start()
-{
-    gameManager = FindFirstObjectByType<GameManager>();
-}
-  
+    // Dipanggil OTOMATIS oleh komponen Player Input
+    // saat action "Move" pada asset InputSystem_Actions aktif.
+    // Nama method WAJIB: On + nama action -> OnMove
     void OnMove(InputValue value)
     {
-       
+        // Ambil nilai Vector2 dari input
         arahGerak = value.Get<Vector2>();
     }
 
     void Update()
     {
-  
+        // Gerakkan objek
         Vector3 arah = new Vector3(arahGerak.x, arahGerak.y, 0);
-
-  
         transform.position += arah * kecepatan * Time.deltaTime;
     }
 
-   
-void OnTriggerEnter2D(Collider2D other)
-{
-    if (other.CompareTag("Coin"))
+    // Dipanggil otomatis saat Player menyentuh objek ber-Trigger
+    void OnTriggerEnter2D(Collider2D other)
     {
-        Destroy(other.gameObject);
+        // Cek apakah yang disentuh punya tag "Coin"
+        if (other.CompareTag("Coin"))
+        {
+            // Hancurkan koin yang tersentuh
+            Destroy(other.gameObject);
 
-        skor++;
-        Debug.Log("Skor: " + skor);
+            // Tambah skor
+            skor++;
 
-        gameManager.AmbilKoin();
+            // Tampilkan skor ke Console
+            Debug.Log("Skor: " + skor);
+
+            gameManager.AmbilKoin();  // Panggil method AmbilKoin() di GameManager
+        }
     }
-}
-
+    public void KenaDamage(int jumlahDamage)
+    {
+        hp -= jumlahDamage;
+        Debug.Log("Player terkena damage! Sisa HP: " + hp);
+    }
 }

@@ -1,16 +1,9 @@
 using UnityEngine;
 
-public class StateZombie : MonoBehaviour
+public enum StateZombie
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    IDLE,
+    PATROL,
+    CHASE,
+    ATTACK
 }
